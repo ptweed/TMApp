@@ -4,8 +4,7 @@
     "slug": "Task-Master",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
@@ -22,8 +21,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.TweedTechServices.TMApp",
+      "buildNumber": "1.0.0"
     },
-    "description": "Organization on the go.  Manage your task list from your phone"
+    "android": {
+      "package": "com.TweedTechServices.TMApp",
+      "versionCode": 1
+    },
+    "description": "Organization on the go.  Manage your task list from your phone.  Demo app using React Native and AWS Amplify",
+    "githubUrl": "https://github.com/ptweed/TMApp",
+    "primaryColor": "#ffffff"
   }
 }
