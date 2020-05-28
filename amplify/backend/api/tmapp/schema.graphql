@@ -1,0 +1,13 @@
+type Task
+@model
+@auth(
+    rules: [
+      {allow: owner, ownerField: "owner", operations: [read, create, update, delete]},
+    ])
+{
+  id: ID!
+  task: String!
+  dueDate: String
+  owner: String
+  status: String
+}

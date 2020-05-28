@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TopHeader Component TopHeader renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "rgb(255,255,255)",
+      "borderBottomWidth": 1,
+      "borderColor": "black",
+      "flexDirection": "row",
+      "marginTop": 0,
+      "paddingBottom": 5,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "flex-start",
+        "borderColor": "black",
+        "flex": 1,
+        "marginLeft": 20,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+      testID="topLevelButtonContainer"
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "opacity": 1,
+            "padding": 10,
+          }
+        }
+      >
+        <
+          color="gray"
+          name="plus"
+          size={20}
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flex": 2,
+        "flexDirection": "column",
+        "marginBottom": 5,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "fontSize": 20,
+        }
+      }
+    >
+      Task Master
+    </Text>
+    <
+      name="tasks"
+      size={20}
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "alignItems": "flex-end",
+        "flex": 1,
+        "marginRight": 20,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+      testID="topLevelButtonContainer"
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "opacity": 1,
+            "padding": 10,
+            "width": "100%",
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "black",
+              "fontSize": 18,
+            }
+          }
+        >
+          Logout
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

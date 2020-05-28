@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FormMultilineInput Component FormMultilineInput renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "borderBottomWidth": 1,
+      "flexDirection": "row",
+      "marginBottom": 0,
+      "marginLeft": 15,
+      "marginRight": 15,
+      "marginTop": 15,
+    }
+  }
+>
+  <
+    color="#2C384A"
+    name="edit"
+    size={28}
+    style={
+      Object {
+        "margin": 10,
+        "marginTop": -5,
+      }
+    }
+  />
+  <TextInput
+    allowFontScaling={true}
+    autoCapitalize="none"
+    blurOnSubmit={true}
+    keyboardType="default"
+    multiline={true}
+    name="task"
+    numberOfLines={4}
+    onSubmitEditing={[Function]}
+    placeholder="Enter task"
+    placeholderTextColor="grey"
+    rejectResponderTermination={true}
+    returnKeyType="next"
+    style={
+      Object {
+        "fontSize": 17,
+        "maxHeight": 150,
+        "width": 620,
+      }
+    }
+    underlineColorAndroid="transparent"
+  />
+</View>
+`;
