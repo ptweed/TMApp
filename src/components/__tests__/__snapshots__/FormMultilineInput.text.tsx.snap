@@ -7,8 +7,8 @@ exports[`FormMultilineInput Component FormMultilineInput renders correctly 1`] =
       "borderBottomWidth": 1,
       "flexDirection": "row",
       "marginBottom": 0,
-      "marginLeft": 15,
-      "marginRight": 15,
+      "marginLeft": 25,
+      "marginRight": 25,
       "marginTop": 15,
     }
   }
@@ -19,8 +19,9 @@ exports[`FormMultilineInput Component FormMultilineInput renders correctly 1`] =
     size={28}
     style={
       Object {
-        "margin": 10,
-        "marginTop": -5,
+        "marginBottom": 5,
+        "marginRight": 5,
+        "marginTop": 0,
       }
     }
   />

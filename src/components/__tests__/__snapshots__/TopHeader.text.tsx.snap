@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TopHeader Component TopHeader renders correctly 1`] = `
-<View
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
   style={
     Object {
       "alignItems": "center",
@@ -9,7 +10,7 @@ exports[`TopHeader Component TopHeader renders correctly 1`] = `
       "borderBottomWidth": 1,
       "borderColor": "black",
       "flexDirection": "row",
-      "marginTop": 0,
+      "marginTop": 10,
       "paddingBottom": 5,
     }
   }
@@ -18,7 +19,6 @@ exports[`TopHeader Component TopHeader renders correctly 1`] = `
     style={
       Object {
         "alignItems": "flex-start",
-        "borderColor": "black",
         "flex": 1,
         "marginLeft": 20,
       }
@@ -135,5 +135,5 @@ exports[`TopHeader Component TopHeader renders correctly 1`] = `
       </View>
     </View>
   </View>
-</View>
+</RCTSafeAreaView>
 `;

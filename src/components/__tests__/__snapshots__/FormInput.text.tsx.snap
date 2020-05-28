@@ -6,10 +6,11 @@ exports[`FormInput Component FormInput renders correctly 1`] = `
     Object {
       "borderBottomWidth": 1,
       "flexDirection": "row",
-      "marginBottom": 0,
+      "marginBottom": 5,
       "marginLeft": 25,
       "marginRight": 25,
       "marginTop": 25,
+      "padding": 0,
     }
   }
 >
@@ -19,7 +20,7 @@ exports[`FormInput Component FormInput renders correctly 1`] = `
     size={28}
     style={
       Object {
-        "marginBottom": 10,
+        "marginBottom": 5,
         "marginRight": 10,
         "marginTop": 0,
       }
