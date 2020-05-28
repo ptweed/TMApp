@@ -33,5 +33,7 @@ amplify/team-provider-info.json
 # utils for AWS environment configuration
 src/utils/EnvConfig.js
 
+# unit tests 
 .jest
 coverage
+src/components/__tests__/__snapshots__/*
