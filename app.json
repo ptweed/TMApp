@@ -22,11 +22,11 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.TweedTechServices.TMApp",
+      "bundleIdentifier": "com.tweedtechservices.tmapp",
       "buildNumber": "1.0.0"
     },
     "android": {
-      "package": "com.TweedTechServices.TMApp",
+      "package": "com.tweedtechservices.tmapp",
       "versionCode": 1
     },
     "description": "Organization on the go.  Manage your task list from your phone.  Demo app using React Native and AWS Amplify",
