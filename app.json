@@ -6,7 +6,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -23,13 +23,14 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.tweedtechservices.tmapp",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.2"
     },
     "android": {
       "package": "com.tweedtechservices.tmapp",
-      "versionCode": 1
+      "versionCode": 1,
+      "permissions" : []
     },
-    "description": "Organization on the go.  Manage your task list from your phone.  Demo app using React Native and AWS Amplify",
+    "description": "Organization on the go.  Manage your task list from your phone so you are always on top of things.",
     "githubUrl": "https://github.com/ptweed/TMApp",
     "primaryColor": "#ffffff"
   }
