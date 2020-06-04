@@ -14,7 +14,7 @@ import { getEnvConfig} from './src/utils/Config'
 // and copy the respective configurations from the ./aws-exports.js file that Amplify generates for you
 // when you configure one of those environments
 
-const env = 'prod' // 'dev' or 'prod'
+const env = 'dev' // 'dev' or 'prod'
 console.log('Running in env: ' + env )
 console.log('---------------------------')
 
