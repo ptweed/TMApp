@@ -11,7 +11,7 @@ import Captions from '../utils/Captions'
 import * as SecureStore from 'expo-secure-store'
 import { CheckBox, withTheme } from 'react-native-elements'
 import * as LocalAuthentication from 'expo-local-authentication'
-import IconButton from '../components/IconButton'
+import IconButton from '../components/IconButton' 
 
 const validationSchema = Yup.object().shape({
     email: Yup.string()
