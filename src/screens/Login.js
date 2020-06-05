@@ -1,13 +1,17 @@
 import React, { Fragment } from 'react'
-import { StyleSheet, SafeAreaView, View } from 'react-native'
+import { StyleSheet, SafeAreaView, View, Text, Input, Alert } from 'react-native'
 import SimpleButton from '../components/SimpleButton'
 import FormInput from '../components/FormInput'
 import FormButton from '../components/FormButton'
 import ErrorMessage from '../components/ErrorMessage'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-import { Auth } from 'aws-amplify'
+import { Auth, a } from 'aws-amplify'
 import Captions from '../utils/Captions'
+import * as SecureStore from 'expo-secure-store'
+import { CheckBox, withTheme } from 'react-native-elements'
+import * as LocalAuthentication from 'expo-local-authentication'
+import IconButton from '../components/IconButton'
 
 const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -23,39 +27,107 @@ const validationSchema = Yup.object().shape({
       ),
   })
 
+const APP_KEY = 'TMAppCredentials'
+
+
 export default class Login extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {error: ''};
+        this.state = {error: '', useTouchID: false, email: '', password: '', loggingInBiometrics: false, touchIDEnabled: false, hasStoredCreds:false };
       }
 
     _isMounted = false
 
     signIn = async (values, {setSubmitting}) => {
-        const { email, password } = values
+        if (this._isMounted) {
+            setSubmitting(true)
+            const { email, password, useTouchID } = values
+            const creds = { userName: email, password: password, useTouchID: useTouchID }
+            console.log('TMAppCredentials: ' + JSON.stringify(creds))
+            await SecureStore.setItemAsync(APP_KEY, JSON.stringify(creds)).catch((reason) => {throw {message:'logging in STORAGE promise error: ' + reason } })
 
-        console.log('props signin: ' + JSON.stringify(this.props))
+            this.login(email, password)
+            setSubmitting(false)
+        }
+    }
 
-
+    login = async (email, password) => {
         if (this._isMounted) {
             try {
-                this.setState({error: ''})
-                console.log('login form values: ' + JSON.stringify(values))
+                this.setState({error: '', loggingInBiometrics: true })
+                // console.log('email: ' + email)
+                // console.log('password: ' + password)
                 const user = await Auth.signIn(email, password)
+                this.setState({loggingInBiometrics: false})
                 user && this.props.parentNav.navigate('App')
+
             } catch (err) {
-                setSubmitting(false)
-                if (err.code === 'UserNotConfirmedException') {
-                    this.setState({error: Captions.accountNotVerifiedYet})
-                } else if (err.code === 'PasswordResetRequiredException') {
-                    this.setState({error: Captions.existingUser})
-                } else if (err.code === 'NotAuthorizedException') {
-                    this.setState({error: Captions.incorrectEmailOrPassword})
-                } else if (err.code === 'UserNotFoundException') {
-                    this.setState({error: Captions.userDoesNotExist})
+                this.setState({loggingInBiometrics: false})
+    
+                if (typeof err === "string") {
+                    console.log('logging in error: ' + err)
                 } else {
-                    this.setState({error: err.code})
+                    console.log('logging in error: ' + JSON.stringify(err))
+                    if (err.code === 'UserNotConfirmedException') {
+                        this.setState({error: Captions.accountNotVerifiedYet})
+                    } else if (err.code === 'PasswordResetRequiredException') {
+                        this.setState({error: Captions.existingUser})
+                    } else if (err.code === 'NotAuthorizedException') {
+                        this.setState({error: Captions.incorrectEmailOrPassword})
+                    } else if (err.code === 'UserNotFoundException') {
+                        this.setState({error: Captions.userDoesNotExist})
+                    } else {
+                        this.setState({error: err.code})
+                    }
+                }
+            }
+        }
+
+    }
+
+    getStoredCredentials = async () => {
+        let value = await SecureStore.getItemAsync(APP_KEY)
+        // console.log('getStoredCredentials value: ' + value)
+        if (value !== null ) {
+            this.setState({error: '', useTouchID: JSON.parse(value).useTouchID, email: JSON.parse(value).userName, password: JSON.parse(value).password, hasStoredCreds: true })
+        } else {
+            this.setState({hasStoredCreds: false})
+        }
+    }
+
+    storeUseTouchID = async (usingTouchID) => {
+        console.log('storeUseTouchID value: ' + usingTouchID)
+        let value = await SecureStore.getItemAsync(APP_KEY)
+        // console.log('retrieved useTouchID value: ' + value)
+        if (value !== null ) {
+            
+            let valueJSON = JSON.parse(value)
+            let creds = {...valueJSON, useTouchID: usingTouchID}
+            await SecureStore.setItemAsync(APP_KEY, JSON.stringify(creds)).catch((reason) => {throw {message:'logging in STORAGE promise error: ' + reason } })
+        } else {
+            const creds = { userName: '', password: '', useTouchID: usingTouchID }
+            await SecureStore.setItemAsync(APP_KEY, JSON.stringify(creds)).catch((reason) => {throw {message:'logging in STORAGE promise error: ' + reason } })
+        }
+    }
+
+    loginBiometrics = async () => {
+        if (this._isMounted) {
+            let compatible = await LocalAuthentication.hasHardwareAsync()
+            let biometricRecords = await LocalAuthentication.isEnrolledAsync()
+            this.setState({touchIDEnabled: compatible && biometricRecords})
+            await this.getStoredCredentials()
+            console.log('has stored creds: ' + this.state.hasStoredCreds)
+
+            if (this.state.touchIDEnabled && this.state.useTouchID && this.state.hasStoredCreds.toString()) {
+                console.log('login biometric attempt')
+                let result = await LocalAuthentication.authenticateAsync({promptMessage: "Sign In"});
+                console.log('login biometric result: ' + JSON.stringify(result))
+                if (result.success) {
+                    console.log('login biometric result success calling login ')
+                    this.login(this.state.email, this.state.password)
+                } else {
+                    console.log('login biometric failed')
                 }
             }
         }
@@ -79,7 +151,8 @@ export default class Login extends React.Component {
         this._isMounted = true
         if (this._isMounted) {
             console.log('Login screen loaded')
-            this.setState({error: ''})
+            // SecureStore.deleteItemAsync(APP_KEY)
+            this.loginBiometrics()
         }
     }
 
@@ -88,11 +161,13 @@ export default class Login extends React.Component {
     }
   
     render() {
+        // this.getStoredCredentials()
 
     return (
         <SafeAreaView style={styles.container}>
             <Formik
-            initialValues={{ email: '', password: '' }}
+            enableReinitialize
+            initialValues={{ email: this.state.email, password: '', useTouchID: this.state.useTouchID }}
             onSubmit={(values, {setSubmitting}) => {
                 try {
                     if (this._isMounted) {
@@ -101,11 +176,12 @@ export default class Login extends React.Component {
                 } catch(err) {
                     if (this._isMounted) {
                         setSubmitting(false)
+                        this.setState({loggingInBiometrics: false})
                     }
                 }
             }}
             validationSchema={validationSchema}>
-                {({ handleChange, values, handleSubmit, errors, isValid, isSubmitting, touched, handleBlur }) => (
+                {({ handleChange, values, handleSubmit, errors, isValid, isSubmitting, touched, handleBlur, setFieldValue }) => (
                     <Fragment>
                     <FormInput
                         name='email'
@@ -129,6 +205,25 @@ export default class Login extends React.Component {
                         onBlur={handleBlur('password')}
                     />
                     <ErrorMessage errorValue={touched.password && errors.password} />
+                    { this.state.touchIDEnabled && this.state.hasStoredCreds &&
+                            <CheckBox
+                                containerStyle={styles.checkBoxContainer}
+                                center
+                                checkedIcon='check-box'
+                                iconType='material'
+                                uncheckedIcon='check-box-outline-blank'
+                                title='Use Touch ID'
+                                checkedTitle='You are using Touch ID'
+                                checkedColor='#039BE5'
+                                checked={values.useTouchID}
+                                onPress={() => { setFieldValue('useTouchID', !values.useTouchID); this.setState({useTouchID: !values.useTouchID }); this.storeUseTouchID(!values.useTouchID) } }
+                            />          
+                    }
+                    {this.state.hasStoredCreds && this.state.useTouchID &&
+                        <IconButton iconColor='#039BE5'  
+                            iconSize={20} iconName='fingerprint' onPress={() => { this.loginBiometrics()}} 
+                            disabled={!this.props.isConnected} />
+}
                     {this.state.error !== '' && <ErrorMessage errorValue={this.state.error} />}
                     <View style={styles.buttonContainer}>
                         <FormButton
@@ -137,7 +232,7 @@ export default class Login extends React.Component {
                         title={Captions.login}
                         buttonColor='#039BE5'
                         disabled={!isValid || isSubmitting || !this.props.isConnected}
-                        loading = { isSubmitting }
+                        loading = { isSubmitting || this.state.loggingInBiometrics }
                         />
                     </View>
                     </Fragment>
@@ -176,4 +271,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     margin: 15
   },
+  checkBoxContainer: {
+      backgroundColor: 'white',
+      borderWidth: 0,
+  }
 })

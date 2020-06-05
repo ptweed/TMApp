@@ -7,7 +7,7 @@ import TasksToDo from '../screens/TasksToDo'
 import { FontAwesome5 } from '@expo/vector-icons';
 import TopHeader from '../components/TopHeader'
 import { Auth } from 'aws-amplify'
-import * as SecureStore from 'expo-secure-store'
+// import * as SecureStore from 'expo-secure-store'
 import OfflineNotifier from '../components/OfflineNotifier'
 import { useDispatch } from 'react-redux'
 import { fetchTasks } from '../slices/tasks'
@@ -50,10 +50,10 @@ const TabsScreen = (props) => {
     const onLogout = async () => {
         try {
             await Auth.signOut()
-            await SecureStore.setItemAsync(
-                'TMAppCreds',
-                ''
-              );
+            // await SecureStore.setItemAsync(
+            //     'TMAppCreds',
+            //     ''
+            //   );
             props.mainNav.navigate('AuthScreen', { screen: 'Login' } )
         } catch (error) {
             console.log('Logout error: ' + JSON.stringify(error))
