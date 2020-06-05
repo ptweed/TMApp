@@ -11,7 +11,7 @@ import Captions from '../utils/Captions'
 import * as SecureStore from 'expo-secure-store'
 import { CheckBox, withTheme } from 'react-native-elements'
 import * as LocalAuthentication from 'expo-local-authentication'
-import IconButton from '../components/IconButton' 
+import BioMetricButton from '../components/BioMetricButton' 
 
 const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -33,8 +33,10 @@ const APP_KEY = 'TMAppCredentials'
 export default class Login extends React.Component {
 
     constructor(props) {
-        super(props);
-        this.state = {error: '', useTouchID: false, email: '', password: '', loggingInBiometrics: false, touchIDEnabled: false, hasStoredCreds:false };
+        super(props)
+        this.state = {error: '', useTouchID: false, email: '', password: '', 
+            loggingInBiometrics: false, touchIDEnabled: false, hasStoredCreds:false,
+            biometricType: 'fingerprint', biometricIcon: 'fingerprint'}
       }
 
     _isMounted = false
@@ -118,6 +120,22 @@ export default class Login extends React.Component {
             this.setState({touchIDEnabled: compatible && biometricRecords})
             await this.getStoredCredentials()
             console.log('has stored creds: ' + this.state.hasStoredCreds)
+
+            console.log('about to get auth types...')
+            console.log('compatible? ' + compatible)
+            console.log('biometricRecords? ' + biometricRecords)
+
+            if (compatible && biometricRecords) {
+                console.log('about to get auth types...2')
+                let authTypes = await LocalAuthentication.supportedAuthenticationTypesAsync()
+                console.log('biometric auth types: ' + authTypes.toString())
+    
+                if (authTypes[0] === 1) {
+                    this.setState({biometricType: 'fingerprint', biometricIcon: 'fingerprint'})
+                } else {
+                    this.setState({biometricType: 'facial recognition', biometricIcon: 'face-recognition'})
+                }
+            }
 
             if (this.state.touchIDEnabled && this.state.useTouchID && this.state.hasStoredCreds.toString()) {
                 console.log('login biometric attempt')
@@ -212,16 +230,16 @@ export default class Login extends React.Component {
                                 checkedIcon='check-box'
                                 iconType='material'
                                 uncheckedIcon='check-box-outline-blank'
-                                title='Use Touch ID'
-                                checkedTitle='You are using Touch ID'
+                                title={'Use ' + this.state.biometricType}
+                                checkedTitle={'You are using ' + this.state.biometricType}
                                 checkedColor='#039BE5'
                                 checked={values.useTouchID}
                                 onPress={() => { setFieldValue('useTouchID', !values.useTouchID); this.setState({useTouchID: !values.useTouchID }); this.storeUseTouchID(!values.useTouchID) } }
                             />          
                     }
                     {this.state.hasStoredCreds && this.state.useTouchID &&
-                        <IconButton iconColor='#039BE5'  
-                            iconSize={20} iconName='fingerprint' onPress={() => { this.loginBiometrics()}} 
+                        <BioMetricButton iconColor='#039BE5'  
+                            iconSize={20} iconName={this.state.biometricIcon} onPress={() => { this.loginBiometrics()}} 
                             disabled={!this.props.isConnected} />
 }
                     {this.state.error !== '' && <ErrorMessage errorValue={this.state.error} />}
