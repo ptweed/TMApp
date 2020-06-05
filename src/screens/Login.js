@@ -92,7 +92,7 @@ export default class Login extends React.Component {
         if (value !== null ) {
             this.setState({error: '', useTouchID: JSON.parse(value).useTouchID, email: JSON.parse(value).userName, password: JSON.parse(value).password, hasStoredCreds: true })
         } else {
-            this.setState({hasStoredCreds: false})
+            this.setState({hasStoredCreds: false}) 
         }
     }
 

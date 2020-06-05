@@ -30,7 +30,7 @@ const FormMultilineInput = ({
       {...rest}
       placeholderTextColor='grey'
       name={name}
-      placeholder={placeholder}
+      placeholder={placeholder} 
       multiline={true}
       numberOfLines={4}
       style={{fontSize: 17, maxHeight: 150, width: calcWidth }}
