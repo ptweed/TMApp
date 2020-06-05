@@ -36,7 +36,7 @@ const FormMultilineInput = ({
       style={{fontSize: 17, maxHeight: 150, width: calcWidth }}
       blurOnSubmit={true}
       onSubmitEditing={()=>{Keyboard.dismiss()}}
-      // keyboardType="default"
+      // keyboardType="default" 
       returnKeyType="next"
       autoCapitalize="sentences"
     />

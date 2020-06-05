@@ -7,7 +7,7 @@ import TasksToDo from '../screens/TasksToDo'
 import { FontAwesome5 } from '@expo/vector-icons';
 import TopHeader from '../components/TopHeader'
 import { Auth } from 'aws-amplify'
-// import * as SecureStore from 'expo-secure-store' 
+// import * as SecureStore from 'expo-secure-store'
 import OfflineNotifier from '../components/OfflineNotifier'
 import { useDispatch } from 'react-redux'
 import { fetchTasks } from '../slices/tasks'
