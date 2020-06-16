@@ -15,7 +15,7 @@
 
 This is a demonstration app to show capabilities of developing a React Native cross platform mobile application.  It is a simple task management app.  The goal was to use various capabilities that exist in most apps that manage data.
 
-1. Cloud user management
+1. Cloud user management 
     - Login
     - Logout
     - Sign Up
