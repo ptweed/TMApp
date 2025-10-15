@@ -21,7 +21,7 @@
     "@types/react-test-renderer": "^16.9.2",
     "aws-amplify": "^3.0.10",
     "aws-amplify-react-native": "^4.1.1",
-    "expo": "~37.0.3",
+    "expo": "~48.0.0",
     "expo-cli": "^3.21.1",
     "expo-constants": "~9.0.0",
     "expo-local-authentication": "~9.0.0",
